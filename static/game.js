@@ -45,24 +45,22 @@ function renderGame() {
 }
 
 // 获取游戏状态
-function updateGameState() {
-    fetch('/game_state')
-        .then(response => response.json())
-        .then(data => {
-            snake = data.snake;
-            food = data.food;
-            scoreElement.textContent = data.score;
-            gameOver = data.game_over;
-            
-            if (gameOver) {
-                finalScoreElement.textContent = data.score;
-                gameOverElement.style.display = 'block';
-            } else {
-                gameOverElement.style.display = 'none';
-            }
-            
-            renderGame();
-        });
+async function updateGameState() {
+    const response = await fetch('/game_state');
+    const data = await response.json();
+    snake = data.snake;
+    food = data.food;
+    scoreElement.textContent = data.score;
+    gameOver = data.game_over;
+    
+    if (gameOver) {
+        finalScoreElement.textContent = data.score;
+        gameOverElement.style.display = 'block';
+    } else {
+        gameOverElement.style.display = 'none';
+    }
+    
+    renderGame();
 }
 
 // 键盘控制
@@ -82,7 +80,7 @@ document.addEventListener('keydown', (e) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({dx, dy}),
+        body: JSON.stringify({dx, dy})
     });
 });
 
